@@ -127,6 +127,28 @@ int rotateY = 0;    //   (Controlled by arrow, PageUp, PageDown keys;
 int rotateZ = 0;    //    Home key sets all rotations to 0.)
 
 
+void drawDodec()
+{
+int i,j,k,face;
+float vertices;
+
+  for(i=0; i < 60; i++) {
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3d(.2,1,.1 );
+    glPushMatrix();
+    glScalef(20,2,2);
+    for(j=0;j<3;j++){
+      face = dodecTriangles[i][j]; // dodecVertices
+      //printf("%i ",face);
+      glVertex3dv(dodecVertices[face]);
+      vertices = dodecVertices[face][j]; 
+      //printf("%f ",vertices);  
+    }
+    glPopMatrix();
+    printf("\n");
+    glEnd();
+  }
+}
 /*
  * The function that draws the current object, with its modeling transformation.
  */
@@ -139,7 +161,7 @@ void draw() {
     // TODO: Draw the currently selected object, number 1, 2, 3, 4, or 5.
     // (Objects should lie in the cube with x, y, and z coordinates in the
     // range -5 to 5.)
-    
+    drawDodec(); 
 }
 
 //-------------------- Draw the Scene  -------------------------
@@ -166,7 +188,8 @@ void display() {  // Display function will draw the image.
     
     if ( ! useAnaglyph ) {
         glLoadIdentity(); // Make sure we start with no transformation!
-        glTranslated(0,0,-15);  // Move object away from viewer (at (0,0,0)).
+        glTranslated(5,0,-15);  // Move object away from viewer (at (0,0,0)).
+        glScalef(5,5,5);
         draw();
     }
     else {
