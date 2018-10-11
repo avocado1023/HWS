@@ -142,13 +142,168 @@ float vertices;
       //printf("%i ",face);
       glVertex3dv(dodecVertices[face]);
       vertices = dodecVertices[face][j]; 
-      //printf("%f ",vertices);  
+      printf("%d ",objectNumber );  
     }
     glPopMatrix();
     printf("\n");
     glEnd();
   }
 }
+void square( float r, float g, float b ) {
+    glColor3f(r,g,b);
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glEnd();
+}
+void drawCube(float size) {  // draws a cube with side length = size
+
+    glPushMatrix();  // Save a copy of the current matrix.
+    glScalef(size,size,size); // scale unit cube to desired size
+
+    square(1, 0, 0); // red front face
+
+    glPushMatrix();
+    glRotatef(90, 0, 1, 0);
+    square(0, 1, 0); // green right face
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotatef(-90, 1, 0, 0);
+    square(0, 0, 1); // blue top face
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotatef(180, 0, 1, 0);
+    square(0, 1, 1); // cyan back face
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotatef(-90, 0, 1, 0);
+    square(1, 0, 1); // magenta left face
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotatef(90, 1, 0, 0);
+    square(1, 1, 0); // yellow bottom face
+    glPopMatrix();
+
+    glPopMatrix(); // Restore matrix to its state before cube() was called.
+
+}
+void drawFirstShape()
+{
+    int c = 1;
+    int z = 0; 
+    glBegin(GL_LINE_LOOP);
+    glColor3f(c,z,z);
+    glVertex2f(-5, 5);
+    glColor3f(c,c,z);
+    glVertex2f(5, 5);
+    glColor3f(z,c,z);
+    glVertex2f(3, 0);
+    glColor3f(z,c,c);
+    glVertex2f(5, -5);
+    glColor3f(z,z,c);
+    glVertex2f(-5, -5);
+    glColor3f(c,z,c);
+    glVertex2f(-3, 0);
+    glColor3f(c,z,z);
+//    glVertex2f(-5, 5);
+    glEnd();
+ 
+}
+void drawCandC()
+{
+    int radius = 3;
+    int height = 5;
+    glutSolidCylinder( radius, height, 32, 8 );
+    glPushMatrix();
+    glTranslated(0,0,5);  // Move object away from viewer (at (0,0,0)).
+    glutSolidCone( radius, height, 32, 8 );
+    glPopMatrix();
+}
+void drawCage5()
+{
+    float rad = .25;
+    int high = 8;
+    int col = 1;
+    int c = 1;
+    int radius = 1;
+    glPushMatrix();
+    //glTranslated(-4,0,0);  // Move object away from viewer (at (0,0,0)).
+    glColor3f(c,c,c);
+    glTranslated(-4,0,0);  // Move object away from viewer (at (0,0,0)).
+    glRotatef(90,0,1,0);   // Apply rotations to complete object.
+    glutSolidCylinder( rad, high, 32, 2 );
+    glPopMatrix();
+    glColor3f(0,c,c);
+    glPushMatrix();
+    glTranslated(-4,0,0);  // Move object away from viewer (at (0,0,0)).
+    glutSolidSphere( radius, 32, 32 );
+    glPopMatrix();
+    glPushMatrix();
+    glTranslated(4,0,0);  // Move object away from viewer (at (0,0,0)).
+    glutSolidSphere( radius, 32, 32 );
+    glPopMatrix();
+    
+}
+void drawCage6 ()
+{
+    glPushMatrix();
+    glTranslated(0,-4,0);  // Move object away from viewer (at (0,0,0)).
+    drawCage5( );
+    glPopMatrix();
+    glPushMatrix();
+    glTranslated(0,4,0);  // Move object away from viewer (at (0,0,0)).
+    drawCage5( );
+    glPopMatrix();
+    glPushMatrix();
+    glTranslated(-4,0,0);  // Move object away from viewer (at (0,0,0)).
+    glRotatef(90,0,0,1);
+    drawCage5( );
+    glPopMatrix();
+    glPushMatrix();
+    glTranslated(4,0,0);  // Move object away from viewer (at (0,0,0)).
+    glRotatef(90,0,0,1);
+    drawCage5( );
+    glPopMatrix();
+ 
+}
+void drawCage7()
+{
+    glPushMatrix();
+    glTranslated(0,0,-4);  // Move object away from viewer (at (0,0,0)).
+    drawCage6( );
+    glPopMatrix();
+    glPushMatrix();
+    glTranslated(0,0,4);  // Move object away from viewer (at (0,0,0)).
+    drawCage6();
+    glPopMatrix();
+    glPushMatrix();
+    glTranslated(0,-4,0);  // Move object away from viewer (at (0,0,0)).
+    glRotatef(90,1,0,0);
+    drawCage6( );
+    glPopMatrix();
+    glPushMatrix();
+    glTranslated(0,4,0);  // Move object away from viewer (at (0,0,0)).
+    glRotatef(90,1,0,0);
+    drawCage6();
+    glPopMatrix();
+    glPushMatrix();
+    glTranslated(-4,0,0);  // Move object away from viewer (at (0,0,0)).
+    glRotatef(90,0,1,0);
+    drawCage6( );
+    glPopMatrix();
+    glPushMatrix();
+    glTranslated(4,0,0);  // Move object away from viewer (at (0,0,0)).
+    glRotatef(90,0,1,0);
+    drawCage6();
+    glPopMatrix();
+}
+
 /*
  * The function that draws the current object, with its modeling transformation.
  */
@@ -161,7 +316,37 @@ void draw() {
     // TODO: Draw the currently selected object, number 1, 2, 3, 4, or 5.
     // (Objects should lie in the cube with x, y, and z coordinates in the
     // range -5 to 5.)
-    drawDodec(); 
+    //ARGH!!!! For whatever reason the program would draw both shapes
+    //at the same time until the print statements were added. The 
+    //print statements are added as a reminder. 
+    if(objectNumber==1) {
+        drawFirstShape();    
+       // printf("%d ",objectnumber );  
+    }
+    if(objectNumber==2) {
+        drawCube(1);    
+       // printf("%d ",objectnumber );  
+    }
+    if(objectNumber==3) {
+        drawDodec();    
+       // printf("%d ",objectNumber );  
+    }
+    if(objectNumber==4) {
+        drawCandC();    
+       // printf("%d ",objectNumber );  
+    }
+    if(objectNumber==5) {
+        drawCage5();    
+        printf("%d ",objectNumber );  
+    }
+    if(objectNumber==6) {
+        drawCage6();    
+        printf("%d ",objectNumber );  
+    }
+    if(objectNumber==7) {
+        drawCage7();    
+        printf("%d ",objectNumber );  
+    }
 }
 
 //-------------------- Draw the Scene  -------------------------
@@ -188,8 +373,8 @@ void display() {  // Display function will draw the image.
     
     if ( ! useAnaglyph ) {
         glLoadIdentity(); // Make sure we start with no transformation!
-        glTranslated(5,0,-15);  // Move object away from viewer (at (0,0,0)).
-        glScalef(5,5,5);
+        glTranslated(0,0,-15);  // Move object away from viewer (at (0,0,0)).
+        glScalef(1,1,1);
         draw();
     }
     else {
@@ -268,6 +453,8 @@ void doKeyboard( unsigned char ch, int x, int y ) {
         objectNumber = 5;
     else if ( ch == '6')
         objectNumber = 6;
+    else if ( ch == '7')
+        objectNumber = 7;
     else if ( ch == ' ')
         useAnaglyph = ! useAnaglyph;
     else
