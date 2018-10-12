@@ -45,34 +45,72 @@ float materials[][13] = {
 	{ /* "green rubber" */   0.0f, 0.05f, 0.0f, 1.0f, 0.4f, 0.5f, 0.4f, 1.0f, 0.04f, 0.7f, 0.04f, 1.0f, .078125f*128 },
 	{ /* "red rubber" */   0.05f, 0.0f, 0.0f, 1.0f, 0.5f, 0.4f, 0.4f, 1.0f, 0.7f, 0.04f, 0.04f, 1.0f, .078125f*128 },
 };
+float moveBase=0;
 
+void drawStellatedDodecahedron()
+{
+    int i,j,k,tri;
+    float vertices; 
+    j=0;
+    glPushMatrix();
+    glRotatef(moveBase,0,1,0);
+    glTranslatef(-5,0,0);
+    glScalef(2,2,2);
+    for(i=0;i<stellatedDodecahedron.faceCount;i++)  {
+        glBegin(GL_TRIANGLE_FAN);
+        while(stellatedDodecahedron.faces[j] != -1) {
+            int vertexNum = stellatedDodecahedron.faces[j];
+            glVertex3dv(&stellatedDodecahedron.vertices[vertexNum*3]);
+            j++;
+        }
+        j++;
+        glEnd();
+    } 
+    glPopMatrix();
+}
+void drawDodecahedron()
+{
+    int i,j,k,tri;
+    float vertices; 
+    j=0;
+    glPushMatrix();
+    glRotatef(moveBase,0,1,0);
+    glTranslatef(5,0,0);
+    glScalef(2,2,2);
+    for(i=0;i<dodecahedron.faceCount;i++)  {
+        glBegin(GL_TRIANGLE_FAN);
+        while(dodecahedron.faces[j] != -1) {
+            int vertexNum = dodecahedron.faces[j];
+            glVertex3dv(&dodecahedron.vertices[vertexNum*3]);
+            j++;
+        }
+        j++;
+        glEnd();
+    } 
+    glPopMatrix();
+}
 void drawHouse()
 {
     int i,j,k,tri;
     float vertices; 
-    GLdouble vA; //vertexAddress;
-    //struct Polyhedron house1;
-    printf("%d\n", house.vertexCount);
-    for(i=0;i<45;i++)  {
+    j=0;
+    glPushMatrix();
+    glRotatef(moveBase,0,1,0);
+    for(i=0;i<house.faceCount;i++)  {
+        glColor3dv(&house.faceColors[i*3]);
         glBegin(GL_TRIANGLE_FAN);
-        glColor3d(.1,.1,.1);
-        glPushMatrix();
-        tri = house.faces[i];
-        tri = tri*3;
-        vA = house.vertices[tri]; 
-        printf("%d\n",tri );
-        
-        glVertex3dv(&vA);
-        glPopMatrix();
+        while(house.faces[j] != -1) {
+            int vertexNum = house.faces[j];
+            glVertex3dv(&house.vertices[vertexNum*3]);
+            j++;
+        }
+        j++;
         glEnd();
-    }
-    //printf("%d\n", stellatedDodecahedron.vertexCount);
-    //printf("%d\n", stellatedIcosahedron.vertexCount);
-    
+    } 
+    glPopMatrix();
 }
 
 // ------------------------ OpenGL rendering and  initialization -----------------------
-float moveBase=0;
 /**
  * The display method is called when the panel needs to be drawn.
  * Here, it draws a stage and some objects on the stage.
@@ -95,6 +133,8 @@ void display() {
     glutSolidCube(20);
     glPopMatrix();
     drawHouse();
+    drawDodecahedron();
+    drawStellatedDodecahedron();
     // TODO draw some shapes!
     
      
