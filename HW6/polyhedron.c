@@ -1,6 +1,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
 
 typedef struct Polyhedron {
     int vertexCount;
@@ -50,6 +51,7 @@ static double findMax(double* array, int vertexCount) {
 Polyhedron house;
 
 static Polyhedron create_houseIFS() {
+	printf("FUCK -----------------------------------\n");
    Polyhedron poly;
    poly.vertexCount = 10;
    poly.faceCount = 9;

@@ -46,9 +46,17 @@ float materials[][13] = {
 	{ /* "red rubber" */   0.05f, 0.0f, 0.0f, 1.0f, 0.5f, 0.4f, 0.4f, 1.0f, 0.7f, 0.04f, 0.04f, 1.0f, .078125f*128 },
 };
 
+void drawHouse()
+{
+    struct Polyhedron house1;
+    printf("%d\n", house.vertexCount);
+    //printf("%d\n", stellatedDodecahedron.vertexCount);
+    //printf("%d\n", stellatedIcosahedron.vertexCount);
+
+}
 
 // ------------------------ OpenGL rendering and  initialization -----------------------
-int moveBase=0;
+float moveBase=0;
 /**
  * The display method is called when the panel needs to be drawn.
  * Here, it draws a stage and some objects on the stage.
@@ -67,10 +75,10 @@ void display() {
     glPushMatrix();
     glTranslatef(0,-1.5,0); // Move top of stage down to y = 0
     glScalef(1, 0.05, 1); // Stage will be one unit thick,
-//    glRotatef(moveBase,0,1,0);
+    glRotatef(moveBase,0,1,0);
     glutSolidCube(20);
     glPopMatrix();
-
+    drawHouse();
     // TODO draw some shapes!
     
      
@@ -140,16 +148,20 @@ void mouseDragged(int x, int y) {
     if ( ! dragging )
         return;
     // TODO Do something when the mouse moves!
-    moveBase=45;
+    float mb;
     glPushMatrix();
     glRotatef(1,0,1,0); 
+/*If statements doesn't need to be between push and pop because the 
+ * updates occur to moveBase either way which updates rotate in display().
+ * I put them between push and pop because that seems more proper. */
+    if(dragging)    {
+        mb = x-prevX;
+        moveBase += (mb/10.0);
+    }
     glutPostRedisplay();  // make OpenGL redraw the scene
     glPopMatrix();
     prevX = x;
     prevY = y;
-    printf("x = %d, y = %d\n", x , y);
-    printf("prevx = %d, prevy = %d\n", prevX , prevY);
-    printf("mouseDragged\n");
 }
 
 
