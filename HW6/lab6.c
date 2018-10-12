@@ -48,11 +48,27 @@ float materials[][13] = {
 
 void drawHouse()
 {
-    struct Polyhedron house1;
+    int i,j,k,tri;
+    float vertices; 
+    GLdouble vA; //vertexAddress;
+    //struct Polyhedron house1;
     printf("%d\n", house.vertexCount);
+    for(i=0;i<45;i++)  {
+        glBegin(GL_TRIANGLE_FAN);
+        glColor3d(.1,.1,.1);
+        glPushMatrix();
+        tri = house.faces[i];
+        tri = tri*3;
+        vA = house.vertices[tri]; 
+        printf("%d\n",tri );
+        
+        glVertex3dv(&vA);
+        glPopMatrix();
+        glEnd();
+    }
     //printf("%d\n", stellatedDodecahedron.vertexCount);
     //printf("%d\n", stellatedIcosahedron.vertexCount);
-
+    
 }
 
 // ------------------------ OpenGL rendering and  initialization -----------------------
